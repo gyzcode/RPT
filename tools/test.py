@@ -102,10 +102,10 @@ def main():
                 else:
                     pred_bboxes.append(0)
                 toc += cv2.getTickCount() - tic
-                #if idx == 0:
-                #    cv2.destroyAllWindows()
-                #if args.vis:
-                if False:
+                if idx == 0:
+                   cv2.destroyAllWindows()
+                if args.vis:
+                # if False:
                     cv2.polylines(img, [np.array(gt_bbox, np.int).reshape((-1, 1, 2))],
                             True, (0, 255, 0), 3)
                    

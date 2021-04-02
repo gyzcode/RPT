@@ -1,0 +1,8 @@
+build/
+__pycache__/
+results/
+raw_results/
+.vscode/
+testing_dataset/
+snapshot/
+*.so
