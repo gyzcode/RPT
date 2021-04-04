@@ -6,3 +6,5 @@ raw_results/
 testing_dataset/
 snapshot/
 *.so
+*.onnx
+*.engine

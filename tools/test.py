@@ -55,6 +55,15 @@ def main():
     # load model
     model = load_pretrain(model, args.snapshot).cuda().eval()
 
+    # convert to onnx
+    onnx_path = 'siamreppoints.backbone.onnx'
+    if not os.path.exists(onnx_path):
+        input_names = ['input']
+        output_names = ['output']
+        dummy_input = torch.randn(1, 3, 127, 127).cuda()
+        dynamic_axes = {'input':{2:'width', 3:'height'}, 'output':{2:'width', 3:'height'}} #adding names for better debugging
+        torch.onnx.export(model.backbone, dummy_input, onnx_path, verbose=True, input_names=input_names, output_names=output_names, dynamic_axes=dynamic_axes, opset_version=11)
+    
     # build tracker
     tracker = build_tracker(model)
     
