@@ -56,6 +56,8 @@ class DeformConv(nn.Module):
             torch.nn.init.constant_(self.bias, 0.)
 
     def forward(self, input, offset):
+        ################################################# 此处造成转rpn转onnx失败
+        # y = torch.randn(1, 256, 25, 25).cuda()
         y = deform_conv(input, offset, self.weight, self.stride,
                            self.padding, self.dilation, self.groups,
                            self.deformable_groups)

@@ -64,6 +64,54 @@ def main():
         dynamic_axes = {'input':{2:'width', 3:'height'}, 'output':{2:'width', 3:'height'}} #adding names for better debugging
         torch.onnx.export(model.backbone, dummy_input, onnx_path, verbose=True, input_names=input_names, output_names=output_names, dynamic_axes=dynamic_axes, opset_version=11)
     
+    onnx_path = 'siamreppoints.downsample2.onnx'
+    if not os.path.exists(onnx_path):
+        input_names = ['input']
+        output_names = ['output']
+        dummy_input = torch.randn(1, 512, 15, 15).cuda()
+        dynamic_axes = {'input':{2:'width', 3:'height'}, 'output':{2:'width', 3:'height'}} #adding names for better debugging
+        torch.onnx.export(model.neck.downsample2, dummy_input, onnx_path, verbose=True, input_names=input_names, output_names=output_names, dynamic_axes=dynamic_axes, opset_version=11)
+
+    onnx_path = 'siamreppoints.downsample3.onnx'
+    if not os.path.exists(onnx_path):
+        input_names = ['input']
+        output_names = ['output']
+        dummy_input = torch.randn(1, 1024, 15, 15).cuda()
+        dynamic_axes = {'input':{2:'width', 3:'height'}, 'output':{2:'width', 3:'height'}} #adding names for better debugging
+        torch.onnx.export(model.neck.downsample3, dummy_input, onnx_path, verbose=True, input_names=input_names, output_names=output_names, dynamic_axes=dynamic_axes, opset_version=11)
+
+    onnx_path = 'siamreppoints.downsample4.onnx'
+    if not os.path.exists(onnx_path):
+        input_names = ['input']
+        output_names = ['output']
+        dummy_input = torch.randn(1, 2048, 15, 15).cuda()
+        dynamic_axes = {'input':{2:'width', 3:'height'}, 'output':{2:'width', 3:'height'}} #adding names for better debugging
+        torch.onnx.export(model.neck.downsample4, dummy_input, onnx_path, verbose=True, input_names=input_names, output_names=output_names, dynamic_axes=dynamic_axes, opset_version=11)
+
+    # # maybe incorrect
+    # onnx_path = 'siamreppoints.rpn2.onnx'
+    # if not os.path.exists(onnx_path):
+    #     input_names = ['input1', 'input2']
+    #     output_names = ['output1', 'output2', 'output3']
+    #     dummy_input = (torch.randn(1, 256, 7, 7).cuda(), torch.randn(1, 256, 31, 31).cuda())
+    #     torch.onnx.export(model.rpn_head.rpn2, dummy_input, onnx_path, verbose=True, input_names=input_names, output_names=output_names, opset_version=11)
+
+    # # maybe incorrect
+    # onnx_path = 'siamreppoints.rpn3.onnx'
+    # if not os.path.exists(onnx_path):
+    #     input_names = ['input1', 'input2']
+    #     output_names = ['output1', 'output2', 'output3']
+    #     dummy_input = (torch.randn(1, 256, 7, 7).cuda(), torch.randn(1, 256, 31, 31).cuda())
+    #     torch.onnx.export(model.rpn_head.rpn3, dummy_input, onnx_path, verbose=True, input_names=input_names, output_names=output_names, opset_version=11)
+
+    # # maybe incorrect
+    # onnx_path = 'siamreppoints.rpn4.onnx'
+    # if not os.path.exists(onnx_path):
+    #     input_names = ['input1', 'input2']
+    #     output_names = ['output1', 'output2', 'output3']
+    #     dummy_input = (torch.randn(1, 256, 7, 7).cuda(), torch.randn(1, 256, 31, 31).cuda())
+    #     torch.onnx.export(model.rpn_head.rpn4, dummy_input, onnx_path, verbose=True, input_names=input_names, output_names=output_names, opset_version=11)
+
     # build tracker
     tracker = build_tracker(model)
     

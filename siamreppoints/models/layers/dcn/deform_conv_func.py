@@ -5,8 +5,11 @@ from torch.nn.modules.utils import _pair
 
 from siamreppoints.models import _C
 
-
 class DeformConvFunction(Function):
+    # @staticmethod
+    # def symbolic(g, *inputs):
+    #     return g.op("Round", inputs[0]) # maybe incorrect
+
     @staticmethod
     def forward(
         ctx, 
