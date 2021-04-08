@@ -281,5 +281,7 @@ def main():
             print('({:3d}) Video: {:12s} Time: {:5.1f}s Speed: {:3.1f}fps'.format(
                 v_idx+1, video.name, toc, idx / toc))
     
+    print("time cost:", model.time_cost / model.count)
+    
 if __name__ == '__main__':
     main()

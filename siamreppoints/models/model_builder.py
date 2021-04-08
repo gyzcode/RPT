@@ -13,6 +13,8 @@ from siamreppoints.models.backbone import get_backbone
 from siamreppoints.models.head import get_rpn_head
 from siamreppoints.models.neck import get_neck
 
+import time
+
 class ModelBuilder(nn.Module):
     def __init__(self):
         super(ModelBuilder, self).__init__()
@@ -29,6 +31,9 @@ class ModelBuilder(nn.Module):
         # build rpn head
         self.rpn_head = get_rpn_head(cfg.RPN.TYPE,
                                      **cfg.RPN.KWARGS)
+        # for time cost measure
+        self.time_cost = 0
+        self.count = 0
     
     def instance(self, x):
         xf = self.backbone(x)
@@ -45,11 +50,18 @@ class ModelBuilder(nn.Module):
     
     def track(self, x, instance_size):
         xf = self.backbone(x)
+
         if cfg.ADJUST.ADJUST:
             xf = self.neck(xf)
 
+        torch.cuda.synchronize()
+        start = time.time()
         cls, pts_preds_init, pts_preds_refine = self.rpn_head(self.zf, xf, instance_size)
-        
+        torch.cuda.synchronize()
+        time_cost = time.time() - start
+        self.time_cost = self.time_cost + time.time() - start
+        self.count = self.count + 1
+
         cls = cls.permute(0, 2, 3, 1)
         cls = cls.reshape(cls.shape[0], -1, 1)
         cls = torch.sigmoid(cls)
